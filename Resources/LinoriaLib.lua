@@ -1,3 +1,8 @@
+--[[
+    All Credits to this UI Library goto Linoria / Inori
+    https://v3rmillion.net/showthread.php?tid=1150670
+]]
+
 local InputService = game:GetService('UserInputService');
 local TextService = game:GetService('TextService');
 local TweenService = game:GetService('TweenService');
