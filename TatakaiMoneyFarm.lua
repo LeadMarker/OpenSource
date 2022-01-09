@@ -8,7 +8,6 @@ local rootPart      = chr.HumanoidRootPart
 local TweenService  = game:GetService("TweenService")
 local noclipE       = false
 local antifall      = nil
-local tween
 
 Window:AddToggle({
     text = "MoneyFarm",
@@ -28,7 +27,7 @@ end
 
 local function moveto(obj, speed)
     local info = TweenInfo.new(((rootPart.Position - obj.Position).Magnitude)/ speed,Enum.EasingStyle.Linear)
-    tween = TweenService:Create(rootPart, info, {CFrame = obj})
+    local tween = TweenService:Create(rootPart, info, {CFrame = obj})
 
     if not rootPart:FindFirstChild("BodyVelocity") then
         antifall = Instance.new("BodyVelocity", rootPart)
