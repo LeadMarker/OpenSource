@@ -1,3 +1,9 @@
+--[[
+Made by LeadMarker#1219
+discord.gg/8Cj5abGrNv
+--]]
+
+
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/JRL-lav/Scripts/main/U"))()
 local Window = Library:CreateWindow("Critical Legends")
 
