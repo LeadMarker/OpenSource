@@ -2,10 +2,6 @@ local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/JRL-l
 local Window = Library:CreateWindow("Critical Legends")
 
 -- // Vars \\ --
-local plr           = game:GetService("Players").LocalPlayer
-local chr           = plr.Character
-local rootPart      = chr.HumanoidRootPart
-local hum           = chr.Humanoid
 local Settings      = {}
 
 -- // Main \\ --
@@ -39,7 +35,7 @@ gm = hookmetamethod(game, "__namecall", function(self, ...)
     local method = getnamecallmethod()
     local args = {...}
     
-    if method == "FireServer" and tostring(self) == "Damage" and args[1] == chr and Settings.GodeMode then 
+    if method == "FireServer" and tostring(self) == "Damage" and args[1] == game.Players.LocalPlayer.Character and Settings.GodeMode then 
         return nil 
     end
 
@@ -51,8 +47,8 @@ spawn(function()
         if Settings.AutoFarm then 
             pcall(function()
                 for i,v in pairs(workspace.CombatFolder:GetChildren()) do
-                    if v:IsA("Folder") and v.Name == plr.Name and v:FindFirstChild("SwordOrb") then 
-                        rootPart.CFrame = v.SwordOrb.Base.CFrame
+                    if v:IsA("Folder") and v.Name == game.Players.LocalPlayer.Name and v:FindFirstChild("SwordOrb") then 
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.SwordOrb.Base.CFrame
                     end
                 end
             end)
@@ -95,7 +91,9 @@ tele:AddList({
 tele:AddButton({
     text = "Teleport",
     callback = function()
-        rootPart.CFrame = workspace.WorldMap[Settings.ChosenArea]:GetModelCFrame()
+        pcall(function()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.WorldMap[Settings.ChosenArea]:GetModelCFrame()
+        end)
     end
 })
 
