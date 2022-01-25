@@ -80,6 +80,14 @@ farm:AddToggle({
     end
 })
 
+farm:AddToggle({
+    text = "Equip-Sword",
+    state = false,
+    callback = function(v)
+        Settings["AutoSword"] = v
+    end
+})
+
 local function getMob()
     local dist, mob = math.huge 
     for i,v in pairs(workspace:GetChildren()) do
@@ -97,34 +105,30 @@ end
 spawn(function()
     while wait() do 
         if Settings.autofarm then 
-            local enemy_mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - getMob():GetModelCFrame().p).magnitude 
+            pcall(function()
+                local enemy_mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - getMob():GetModelCFrame().p).magnitude 
 
-            if game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Model"):FindFirstChild("Blade") then  
-                if game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Model"):FindFirstChild("Equipped").Part0 == nil then
-                    game:GetService("VirtualInputManager"):SendKeyEvent(true, "R", false, game)
+                if not getMob():FindFirstChild("Executed") then 
+                    moveto(getMob():GetModelCFrame() * CFrame.new(0,0,3), 75)
                 end
-            end
 
-            if not getMob():FindFirstChild("Executed") then 
-                moveto(getMob():GetModelCFrame() * CFrame.new(0,0,3), 75)
-            end
-
-            if getMob():FindFirstChild("Executed") then 
-                getMob():Destroy()
-            end
-
-            if getMob():FindFirstChild("Down") then
-                moveto(getMob():GetModelCFrame() * CFrame.new(0,0,3), 75)
-                game:GetService("ReplicatedStorage").Remotes.Sync:InvokeServer("Character", "Execute")
-            end
-
-            if enemy_mag <= 10 then 
-                if getMob():FindFirstChild("Block") then 
-                    game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Combat", "Heavy")
-                else
-                    game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Combat", "Server")
+                if getMob():FindFirstChild("Executed") then 
+                    getMob():Destroy()
                 end
-            end
+
+                if getMob():FindFirstChild("Down") then
+                    moveto(getMob():GetModelCFrame() * CFrame.new(0,0,3), 75)
+                    game:GetService("ReplicatedStorage").Remotes.Sync:InvokeServer("Character", "Execute")
+                end
+
+                if enemy_mag <= 10 then 
+                    if getMob():FindFirstChild("Block") then 
+                        game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Combat", "Heavy")
+                    else
+                        game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Combat", "Server")
+                    end
+                end
+            end)
         end
     end
 end)
@@ -140,6 +144,20 @@ spawn(function()
                         if mob_mag <= 15 then
                             game:GetService("ReplicatedStorage").Remotes.Sync:InvokeServer("Character", "Execute")
                         end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+spawn(function()
+    while wait() do
+        if Settings.AutoSword then 
+            pcall(function()
+                if game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Model"):FindFirstChild("Blade") then  
+                    if game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Model"):FindFirstChild("Equipped").Part0 == nil then
+                        game:GetService("VirtualInputManager"):SendKeyEvent(true, "R", false, game)
                     end
                 end
             end)
