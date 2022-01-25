@@ -72,6 +72,17 @@ farm:AddToggle({
     end
 })
 
+farm:AddSlider({
+    text = "TP Speed",
+    value = 75,
+    min = 30,
+    max = 100,
+    float = 1,
+    callback = function(v)
+        Settings["TpSpeed"] = v
+    end
+})
+
 farm:AddToggle({
     text = "AutoGrip",
     state = false,
@@ -109,7 +120,7 @@ spawn(function()
                 local enemy_mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - getMob():GetModelCFrame().p).magnitude 
 
                 if not getMob():FindFirstChild("Executed") then 
-                    moveto(getMob():GetModelCFrame() * CFrame.new(0,0,3), 75)
+                    moveto(getMob():GetModelCFrame() * CFrame.new(0,0,3), tonumber(Settings.TpSpeed or 75))
                 end
 
                 if getMob():FindFirstChild("Executed") then 
@@ -117,7 +128,7 @@ spawn(function()
                 end
 
                 if getMob():FindFirstChild("Down") then
-                    moveto(getMob():GetModelCFrame() * CFrame.new(0,0,3), 75)
+                    moveto(getMob():GetModelCFrame() * CFrame.new(0,0,3), tonumber(Settings.TpSpeed or 75))
                     game:GetService("ReplicatedStorage").Remotes.Sync:InvokeServer("Character", "Execute")
                 end
 
@@ -247,7 +258,7 @@ spawn(function()
                     end
                 end                
             else
-                moveto(getTrinket():FindFirstChild("Part").CFrame, 75)
+                moveto(getTrinket():FindFirstChild("Part").CFrame, tonumber(Settings.TpSpeed or 75))
             end
         end
     end
@@ -528,7 +539,7 @@ plrs:AddToggle({
 plrs:AddButton({
     text = "Teleport",
     callback = function()
-        moveto(game.Players:FindFirstChild(Settings.ChosenPlayer).Character.HumanoidRootPart.CFrame, 75)
+        moveto(game.Players:FindFirstChild(Settings.ChosenPlayer).Character.HumanoidRootPart.CFrame, tonumber(Settings.TpSpeed or 75))
     end
 })
 
@@ -560,7 +571,7 @@ tele:AddList({
 tele:AddButton({
     text = "Teleport Breathing",
     callback = function()
-        moveto(workspace.Npcs:FindFirstChild(breath_style[Settings.ChosenBreathing]):GetModelCFrame(), 75)
+        moveto(workspace.Npcs:FindFirstChild(breath_style[Settings.ChosenBreathing]):GetModelCFrame(), tonumber(Settings.TpSpeed or 75))
     end
 })
 
@@ -582,7 +593,7 @@ tele:AddList({
 tele:AddButton({
     text = "Teleport NPC",
     callback = function()
-        moveto(workspace.Npcs:FindFirstChild(Settings.ChosenNPC):GetModelCFrame(), 75)        
+        moveto(workspace.Npcs:FindFirstChild(Settings.ChosenNPC):GetModelCFrame(), tonumber(Settings.TpSpeed or 75))        
     end
 })
 
@@ -629,7 +640,7 @@ spawn(function()
             if ore_mag <= 5 then 
                 game:GetService("ReplicatedStorage").Remotes.Sync:InvokeServer("Pickaxe", "Server")
             else
-                moveto(getOre().CFrame, 75)
+                moveto(getOre().CFrame, tonumber(Settings.TpSpeed or 75))
             end
         end
     end
