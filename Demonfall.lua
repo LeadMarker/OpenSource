@@ -379,13 +379,8 @@ spawn(function()
     while wait(0.1) do 
         if Settings.AutoGourd then 
             pcall(function()
-                if game:GetService("Players").LocalPlayer.PlayerGui.Interface.HUD.Clay.Back.TextLabel.Text < "45%" then
-                    game:GetService("VirtualInputManager"):SendMouseButtonEvent(500, 500, 0, true, game, 1)
-                end
-                
-                if game:GetService("Players").LocalPlayer.PlayerGui.Interface.HUD.Clay.Back.TextLabel.Text >= "70%" then
-                    game:GetService("VirtualInputManager"):SendMouseButtonEvent(500, 500, 0, false, game, 1)
-                end
+                game:GetService("VirtualInputManager"):SendMouseButtonEvent(500, 500, 0, true, game, 1)
+                game:GetService("ReplicatedStorage").Remotes.Sync:InvokeServer("Clay", "Server2")
             end)
         end
     end
