@@ -1,3 +1,7 @@
+--[[
+LeadMarker#1219
+--]]
+
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/JRL-lav/Scripts/main/U"))()
 local Window = Library:CreateWindow("Kronos | Demonfall")
 
@@ -51,9 +55,13 @@ local mob_list = {
     "FrostyOni",
     "Blue Demon",
     "SlayerBoss",
+    "Lower Moon 3",
+    "Kaigaku",
+    "Okuro",
 
     -- Slayer List
     "GenericSlayer",
+    "Zenitsu",
 }
 
 farm:AddList({
@@ -386,27 +394,10 @@ spawn(function()
     end
 end)
 
-misc:AddButton({
-    text = "GodMode",
-    callback = function()
-        game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "FallDamageServer", "nan(ind)")
-    end
-})
-
-misc:AddButton({
-    text = "NormalHealth (CombatLog)",
-    callback = function()
-        local combat = Instance.new("IntValue", game.Players.LocalPlayer.Character)
-        combat.Value = 0
-        combat.Name = "Combat"
-        wait()
-        game.Players.LocalPlayer:Kick()
-    end
-})
-
-misc:AddButton({
+misc:AddToggle({
     text = "Enhance-Visuals",
-    callback = function()
+    callback = function(v)
+        Settings["Visuals"] = v
         pcall(function()
             game.Lighting.SunRays.Enabled = false
             game.Lighting.ColorCorrection.Enabled = false
@@ -422,6 +413,45 @@ misc:AddButton({
             end
             game.Lighting.Blind:Destroy()
         end)
+    end
+})
+
+spawn(function()
+    while wait(1) do
+        if Settings.Visuals then 
+            game.Lighting.SunRays.Enabled = false
+            game.Lighting.ColorCorrection.Enabled = false
+            game.Lighting.Blur.Enabled = false
+            game.Lighting.Bloom.Enabled = false
+
+            for i,v in pairs(game.Lighting:GetChildren()) do
+                if v.Name == "Atmosphere" then 
+                    v.Density = 0 
+                    v.Glare = 0 
+                    v.Haze = 0
+                end
+            end
+            if game.Lighting:FindFirstChild("Blind") then 
+                game.Lighting:FindFirstChild("Blind"):Destroy()
+            end
+            if workspace:FindFirstChild("Folder") and workspace:FindFirstChild("Folder"):FindFirstChild("Part") then 
+                workspace:FindFirstChild("Folder"):Destroy()
+            end
+        end
+    end
+end)
+
+misc:AddButton({
+    text = "GodMode",
+    callback = function()
+        game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "FallDamageServer", "nan(ind)")
+    end
+})
+
+misc:AddButton({
+    text = "NormalHealth (Kills You)",
+    callback = function()
+        game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "FallDamageServer", math.huge)
     end
 })
 -- // Players \\ -- 
@@ -616,12 +646,12 @@ ores:AddToggle({
 
 local function getOre()
     local dist, ore = math.huge
-    for i,v in pairs(game:GetService("Workspace").Map.Minerals:GetChildren()) do
-        if v.Name == "Rock" and v:FindFirstChild("Mineral") and v:FindFirstChild("Mineral"):FindFirstChild("MineralName") and v:FindFirstChild("Mineral"):FindFirstChild("MineralName").Value == Settings.ChosenOre then 
-            local oremag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v:FindFirstChild("Mineral").Position).magnitude
+    for i,v in pairs(game:GetService("Workspace").Map.Minerals:GetDescendants()) do
+        if v.Name == "MineralName" and v.Value == Settings.ChosenOre then 
+            local oremag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Parent.Position).magnitude
             if oremag < dist then 
                 dist = oremag
-                ore = v:FindFirstChild("Mineral")
+                ore = v.Parent
             end
         end
     end
