@@ -696,7 +696,7 @@ plrs:AddButton({
 local tele = Window:AddFolder("Teleports")
 local breath_style = {
     ["SunBreath"] = "Tanjiro",
-    ["MoonBreath"] = "Kokushibou",
+    ["MoonBreath"] = "Kokushibo",
     ["WaterBreath"] = "Urokodaki",
     ["ThunderBreath"] = "Kujima",
     ["FlameBreath"] = "Rengoku",
