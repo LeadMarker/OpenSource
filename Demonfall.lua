@@ -1,5 +1,6 @@
 --[[
-LeadMarker#1219
+	Made by LeadMarker#1219
+	Dont skid this or there will be legal action
 --]]
 
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/JRL-lav/Scripts/main/U"))()
@@ -92,10 +93,13 @@ farm:AddSlider({
 })
 
 farm:AddToggle({
-    text = "AutoGrip",
+    text = "AutoBreathe",
     state = false,
     callback = function(v)
-        Settings["AutoGrip"] = v
+        Settings["AutoBreathe"] = v
+        if not v then 
+            game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "Breath", false)
+        end
     end
 })
 
@@ -132,6 +136,7 @@ spawn(function()
                 end
 
                 if getMob():FindFirstChild("Executed") then 
+                    wait(1)
                     getMob():Destroy()
                 end
 
@@ -154,18 +159,25 @@ end)
 
 spawn(function()
     while wait() do 
-        if Settings.AutoGrip then
-            pcall(function()
-                for i,v in pairs(workspace:GetChildren()) do
-                    if v:IsA("Model") and v:FindFirstChild("Down") then
-                        local mob_mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v:FindFirstChild("HumanoidRootPart").Position).magnitude
-                        
-                        if mob_mag <= 15 then
-                            game:GetService("ReplicatedStorage").Remotes.Sync:InvokeServer("Character", "Execute")
-                        end
-                    end
-                end
-            end)
+        if Settings.AutoBreathe then
+            if game.Players.LocalPlayer.Character:FindFirstChild("Busy") then 
+                game.Players.LocalPlayer.Character:FindFirstChild("Busy"):Destroy()
+            end
+
+            if game.Players.LocalPlayer.Character:FindFirstChild("Slow") then 
+                game.Players.LocalPlayer.Character:FindFirstChild("Slow"):Destroy()
+            end
+        end
+    end
+end)
+
+spawn(function()
+    while wait() do 
+        if Settings.AutoBreathe then 
+            if game:GetService("Players").LocalPlayer.Breathing.Value ~= 100 then 
+                game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "Breath", true)
+            end
+            wait(2)
         end
     end
 end)
@@ -182,6 +194,110 @@ spawn(function()
             end)
         end
     end
+end)
+
+farm:AddLabel({text = "--Skils"})
+
+farm:AddToggle({text = "Skill-1",state = false,callback = function(v) Settings["Skill-1"] = v end})
+farm:AddToggle({text = "Skill-2",state = false,callback = function(v) Settings["Skill-2"] = v end})
+farm:AddToggle({text = "Skill-3",state = false,callback = function(v) Settings["Skill-3"] = v end})
+farm:AddToggle({text = "Skill-4",state = false,callback = function(v) Settings["Skill-4"] = v end})
+farm:AddToggle({text = "Skill-5",state = false,callback = function(v) Settings["Skill-5"] = v end})
+farm:AddToggle({text = "Skill-6",state = false,callback = function(v) Settings["Skill-6"] = v end})
+farm:AddToggle({text = "Skill-7",state = false,callback = function(v) Settings["Skill-7"] = v end})
+
+pcall(function()
+spawn(function()
+    while wait() do
+        if Settings.autofarm then
+            local mobmag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - getMob():GetModelCFrame().p).magnitude
+            if mobmag <= 10 then
+                if Settings["Skill-1"] then 
+                    game:GetService("VirtualInputManager"):SendKeyEvent(true, "One", false, game)
+                    wait(5)
+                end
+            end
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if Settings.autofarm then
+            local mobmag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - getMob():GetModelCFrame().p).magnitude
+            if mobmag <= 10 then
+                if Settings["Skill-2"] then 
+                    game:GetService("VirtualInputManager"):SendKeyEvent(true, "Two", false, game)
+                    wait(5)
+                end
+            end
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if Settings.autofarm then
+            local mobmag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - getMob():GetModelCFrame().p).magnitude
+            if mobmag <= 10 then
+                if Settings["Skill-3"] then 
+                    game:GetService("VirtualInputManager"):SendKeyEvent(true, "Three", false, game)
+                    wait(5)
+                end
+            end
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if Settings.autofarm then
+            local mobmag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - getMob():GetModelCFrame().p).magnitude
+            if mobmag <= 10 then
+                if Settings["Skill-4"] then 
+                    game:GetService("VirtualInputManager"):SendKeyEvent(true, "Four", false, game)
+                    wait(5)
+                end
+            end
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if Settings.autofarm then
+            local mobmag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - getMob():GetModelCFrame().p).magnitude
+            if mobmag <= 10 then
+                if Settings["Skill-5"] then 
+                    game:GetService("VirtualInputManager"):SendKeyEvent(true, "Five", false, game)
+                    wait(5)
+                end
+            end
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if Settings.autofarm then
+            local mobmag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - getMob():GetModelCFrame().p).magnitude
+            if mobmag <= 10 then
+                if Settings["Skill-6"] then 
+                    game:GetService("VirtualInputManager"):SendKeyEvent(true, "Six", false, game)
+                    wait(5)
+                end
+            end
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if Settings.autofarm then
+            local mobmag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - getMob():GetModelCFrame().p).magnitude
+            if mobmag <= 10 then
+                if Settings["Skill-7"] then 
+                    game:GetService("VirtualInputManager"):SendKeyEvent(true, "Seven", false, game)
+                    wait(5)
+                end
+            end
+        end
+    end
+end)
 end)
 
 -- // Misc / Extra \\ -- 
@@ -441,19 +557,27 @@ spawn(function()
     end
 end)
 
+misc:AddLabel({text = "---Turn off NoFall---"})
+
 misc:AddButton({
     text = "GodMode",
     callback = function()
-        game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "FallDamageServer", "nan(ind)")
+        pcall(function()
+            game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "FallDamageServer", "nan(ind)")
+        end)
     end
 })
 
 misc:AddButton({
     text = "NormalHealth (Kills You)",
     callback = function()
-        game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "FallDamageServer", math.huge)
+        pcall(function()
+            game:GetService("ReplicatedStorage").Remotes.Async:FireServer("Character", "FallDamageServer", 99999999999999999999999999999999999999999999999999999999999999999999)
+        end)
     end
 })
+
+misc:AddLabel({text = "---Turn off NoFall---"})
 -- // Players \\ -- 
 local plrs = Window:AddFolder("Players")
 plrs:AddLabel({text = "----LocalPlayer Items"})
@@ -579,6 +703,7 @@ local breath_style = {
     ["WindBreath"] = "Grimm",
     ["MistBreath"] = "Tokito",
     ["InsectBreath"] = "Shinobu",
+    ["SoundBreath"] = "Uzui",
 }
 local breath_names = {}
 for i,v in pairs(breath_style) do
