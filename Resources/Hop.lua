@@ -1,3 +1,6 @@
+-- // Credits to CharWar \\ --
+-- https://v3rmillion.net/member.php?action=profile&uid=114844
+
 local PlaceID = game.PlaceId
 local AllIDs = {}
 local foundAnything = ""
