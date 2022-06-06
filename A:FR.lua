@@ -3,6 +3,8 @@ local window = library:CreateWindow('A:FR - LeadMarker')
 
 local main = window:AddFolder('Spell Cast')
 
+local setting = window:AddFolder('Settings')
+
 local SPELL_KEYS = {
     'UP',
     'DOWN',
@@ -130,15 +132,26 @@ local SPELL_CAST = {
     end
 }
 
+-- // Main \\ -- 
 for i,v in pairs(SPELL_CAST) do 
     main:AddBind({
         text = i,
         key = 'NONE',
         hold = false,
-        callback = function(spell)
+        callback = function()
             v()
         end
     })
 end
+
+-- // Settings \\ -- 
+setting:AddBind({
+    text = "UI Toggle",
+    key = 'NONE',
+    hold = false,
+    callback = function()
+        library:Close()
+    end
+})
 
 library:Init()
