@@ -1,5 +1,5 @@
 -- DOLLARWARE UI LIBRARY
--- MADE BY TOPIT | dropdown / multidrop added by LeadMarker
+-- MADE BY TOPIT | dropdown / Multidrop added by LeadMarker
 
 -- warning: comments are mostly retarded / useless
 -- some shit makes no sense but idc enough to fix it
@@ -5239,6 +5239,80 @@ do
         label.section = section
     end
     
+    -- Sector
+    do 
+        local sector = {} do
+            sector.__index = sector
+            setmetatable(sector, elemClasses.baseElement)
+                
+            sector.class = 'sector'
+            
+            local instances = {} do 
+                local controlFrame = Instance.new('Frame') do
+                    controlFrame.BackgroundTransparency = 1
+                    controlFrame.Name = '#control'
+                    controlFrame.Size = UDim2.new(1, 0, 0, 1)
+                    controlFrame.Visible = true
+                    controlFrame.ZIndex = 34
+                    
+                    instances.controlFrame = controlFrame
+                    
+                    local trim = Instance.new('Frame') do 
+                        trim.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                        trim.BackgroundTransparency = 0
+                        trim.BorderSizePixel = 0 
+                        trim.Name = '#trim'
+                        -- trim.Position = UDim2.fromOffset(-1, -2)
+                        -- trim.Position = UDim2.new(1, -3, 0, 2)
+                        trim.Size = UDim2.new(1, 2, 0, 1)
+                        trim.ZIndex = 33
+                        
+                        trim.Parent = controlFrame
+                        
+                        local gradient = Instance.new('UIGradient') do 
+                            gradient.Color = ColorSequence.new(
+                                theme.Primary, 
+                                theme.Secondary
+                            )
+                            gradient.Enabled = true
+                            gradient.Name = '#gradient'
+                            gradient.Rotation = 0
+                            
+                            gradient.Parent = trim
+                        end
+                    end
+                end
+            end
+            
+            sector.instances = instances
+            
+            sector.new = function(self) 
+                local new = setmetatable({}, self)
+                new.controls = {}
+                
+                local instances = {}
+                instances.controlFrame = self.instances.controlFrame:Clone()
+                instances.trim = instances.controlFrame['#trim']
+                instances.gradient = instances.trim['#gradient']
+                
+                new.instances = instances
+                return new
+            end
+            
+            elemClasses.section.addSector = function(self) 
+                local new = sector:new()
+                new.section = self 
+                table.insert(self.controls, new)
+                
+                new.instances.controlFrame.Parent = self.instances.controlMenu
+                
+                return new
+            end
+        end
+        
+        elemClasses.sector = sector
+    end
+    
     -- Unfinished
     -- DROPDOWN OPTION
     --[[
@@ -5618,12 +5692,13 @@ do
                             menu.Position = UDim2.fromOffset(3, 18)
                             menu.CanvasSize = UDim2.new(0,0,0,0)
                             menu.ScrollBarImageTransparency = 0.9
-                            menu.ScrollBarThickness = 1
+                            menu.ScrollBarThickness = 2
                             menu.ScrollingDirection = 'Y'
                             menu.ScrollingEnabled = true
                             menu.Size = UDim2.new(1, -6, 0, 0)
                             menu.TopImage = 'rbxassetid://9416839567'
                             menu.ZIndex = 34
+                            menu.Visible = false
                             
                             menu.Parent = controlFrame
                             
@@ -5665,6 +5740,9 @@ do
             dropdown.open = function(self) 
                 self.openState = true 
                 self:fireEvent('onOpen')
+
+                self.instances.menu.Visible = true
+                task.wait()
                 
                 local frame = self.instances.button
                 if (self.focused) then
@@ -5672,12 +5750,12 @@ do
                 else
                     tween(frame, {BackgroundColor3 = theme.Button2}, 0.2, 1)
                 end
+                
                 tween(self.instances.icon, {
                     Rotation = 180,
                     ImageColor3 = theme.Primary
                 }, 0.3, 1)
             
-                
                 tween(self.instances.menu, {
                     Size = UDim2.new(1, -6, 0, 68),
                     CanvasSize = UDim2.new(0,0,0,self.instances.menu['#layout'].AbsoluteContentSize.Y + 7) 
@@ -5697,18 +5775,24 @@ do
                 else
                     tween(frame, {BackgroundColor3 = theme.Button1}, 0.2, 1)
                 end
+                
                 tween(self.instances.icon, {
                     Rotation = 0,
                     ImageColor3 = theme.Secondary
                 }, 0.3, 1)
                 
-                tween(self.instances.menu, {
+                local a = tween(self.instances.menu, {
+                    -- Visible = false,
                     Size = UDim2.new(1, -6, 0, 0),
                     CanvasSize = UDim2.new(0,0,0,0) 
                 }, 0.2, 1)
-                tween(self.instances.controlFrame, {
+                local b = tween(self.instances.controlFrame, {
                     Size = UDim2.new(1, 0, 0, 20)
                 }, 0.2, 1)
+            
+                if a then 
+                    self.instances.menu.Visible = false
+                end
             end
             
             dropdown.isOpen = function(self) 
@@ -5947,7 +6031,6 @@ do
         elemClasses.dropdown = dropdown
     end    
 
-
     -- MULTIDROP
     do 
         local multidropdown = {} do 
@@ -6067,12 +6150,13 @@ do
                             menu.Position = UDim2.fromOffset(3, 18)
                             menu.CanvasSize = UDim2.new(0,0,0,0)
                             menu.ScrollBarImageTransparency = 0.9
-                            menu.ScrollBarThickness = 1
+                            menu.ScrollBarThickness = 2
                             menu.ScrollingDirection = 'Y'
                             menu.ScrollingEnabled = true
                             menu.Size = UDim2.new(1, -6, 0, 0)
                             menu.TopImage = 'rbxassetid://9416839567'
                             menu.ZIndex = 34
+                            menu.Visible = false
                             
                             menu.Parent = controlFrame
                             
@@ -6120,6 +6204,9 @@ do
                 self.openState = true 
                 self:fireEvent('onOpen')
                 
+                self.instances.menu.Visible = true
+                task.wait()
+                
                 local frame = self.instances.button
                 if (self.focused) then
                     tween(frame, {BackgroundColor3 = theme.Button4}, 0.2, 1)
@@ -6163,6 +6250,9 @@ do
                 tween(self.instances.controlFrame, {
                     Size = UDim2.new(1, 0, 0, 20)
                 }, 0.2, 1)
+            
+                task.wait()
+                self.instances.menu.Visible = false
             end
             
             multidropdown.isOpen = function(self) 
