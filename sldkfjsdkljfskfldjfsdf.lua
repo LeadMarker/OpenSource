@@ -1,1 +1,1 @@
-return 'fastasf'
+return 'sorelosers'
