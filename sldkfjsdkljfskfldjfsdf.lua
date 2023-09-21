@@ -1,1 +1,1 @@
-return 'opassscript'
+return 'wupdate'
